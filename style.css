@@ -1,0 +1,309 @@
+@import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "PP Neue Montreal", sans-serif;
+}
+h1 {
+  font-size: 4rem;
+  font-weight: 500;
+  line-height: 1;
+}
+h2 {
+  font-size: 3rem;
+  font-weight: 500;
+  line-height: 1.125;
+  letter-spacing: -0.3rem;
+}
+p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+section {
+  position: relative;
+  width: 100vw;
+  /* just know product overciew will come inside this as well but 
+  we wont even write anything about it 
+  so it should be left flexible  what concerns me is that the overflw is hidden that why whater willl be in the view posrt of product overview will be visible so we do exactally that we translate horizantally*/
+  height: 100vh;
+  background-color: #5f5f5f;
+  color: black;
+  overflow: hidden;
+  /*  since we provided the overflow hidden so what happens is that we set the width of header 1 to 200vh and translated it to 0%, (this probally fixes h1 to the left), now we give header2 to 150vw and translate it to 100% so its like after header 1 it will appear beccause of thet translations also notice the body has no width or height defined in this case */
+}
+
+.intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 2rem;
+}
+
+.outro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 2rem;
+}
+
+.model-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+/* now the horizantal slide begins */
+
+.header1 {
+  position: relative;
+  width: 200vw;
+  height: 100svh;
+  
+  transform: translateX(0%);
+  /* why this? */
+  background-color: rgb(244, 244, 244);
+  
+}
+.header2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 150vw;
+  height: 100svh;
+  color: white;
+  transform: translateX(100%);
+  z-index: 2;
+
+  background-color: rgb(3, 3, 3);
+}
+
+.header1 {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+}
+
+.header2 {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+}
+
+.header1 h1 {
+  width: 100%;
+  
+  font-size: 15vw;
+  line-height: 1.25;
+  letter-spacing: -0.02;
+  
+  
+}
+
+.header2 h1 {
+  width: 100%;
+  font-size: 15vw;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.circular-mask {
+  /* this will be a full section element but it will start hidden using a circular clip path set to 0 %*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  clip-path: circle(0% at 50% 50%);
+  /* look that how we clip and animate later */
+}
+/* i will tell you something if you set an element to be abslute 
+then with respect to its parent so if i apply it to tool tip then 
+it will be raltive to  */
+/*    If you give position: absolute; to the .tooltip and:
+
+The parent .tooltips has position: relative; (or absolute, or fixed,
+ or sticky),
+👉 then .tooltip will be positioned relative to .tooltips.
+
+The parent .tooltips does not have any positioning (static is
+ default),
+👉 then .tooltip will be positioned relative to the nearest ancestor 
+that does have a positioning context — and if none exists, that will 
+be the body or .Product-overview. */
+/* .tooltip {
+  width: 20vw;
+  height: 20vh;
+  background-color: rgb(225, 38, 38);
+  position: absolute;
+  top: 0;
+  left: 0;
+} */
+
+/* ❌ No, .tooltip cannot be positioned relative
+ to .intro,
+because .intro is not an ancestor of .tooltip — it's just a sibling 
+section that comes before it in the HTML. */
+
+.tooltips{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 75%;
+    display: flex;
+    gap: 15rem;
+    
+    
+}
+.tooltip{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    gap: 0.5rem;
+    color: white;
+}
+.tooltip:nth-child(2){
+    justify-content: flex-end;
+    align-items: flex-end;
+    /* so it puts to the end of coloumn and of its row respectivly */
+}
+
+.tooltip .divider{
+    position: relative;
+    width: 100%;
+    height: 1px;
+    background-color: #5f5f5f;
+    /* it will be a thin horizantal line , iit will be hidden initially but alter we will scale it up */
+    margin: 0.5rem;
+    transform: scaleX(0);
+    /* initally set to 0 */
+}
+
+.tooltip:nth-child(1) .divider{
+    transform-origin: right center;
+}
+.tooltip:nth-child(2) .divider{
+    transform-origin: left center;
+}
+
+/* the above is like setting from where the "origin" of transformation will happen . one will scale up form the right one from the left */
+.tooltip .icon{
+    font-size: 2.5rem;
+    overflow: hidden;
+}
+
+.tooltip.description{
+    color: white;
+}
+
+.tooltip:nth-child(2) .icon,
+.tooltip:nth-child(2) .title,
+.tooltip .description{
+    width: 70%;
+}
+
+
+/* okay now the animation of texts kicks in
+ */
+ /* to prep for animations we will assign specific class name to the headers titles and desriptions so that we can tagret them later
+ so we can target them later using gsap split text plugin */
+ /* we will break the text into indivisual lines or chanracters 
+ during the run time and not manually in html*/
+
+ .header1 h1 .char,
+ .tooltip .title .line,
+ .tooltip .description .line{
+    display: inline-block;
+    overflow: hidden;
+ }
+ /* Each character (.char) in .header1 h1
+
+  Each line (.line) in .tooltip .title and .tooltip .description */
+  /* display: inline-block → so we can treat each piece like a block and animate it independently.
+
+overflow: hidden → hides anything that overflows outside its own box (useful when animating from outside-in).
+
+ */
+ /* so for the h1 we animate each character and for title and description we animate it as a line */
+
+ .header1 h1 .char> span,
+ .tooltip .icon ion-icon,
+ .tooltip .title .line >span,
+ .tooltip .description .line>span{
+    position: relative;
+    display: block;
+    transform: translateY(100%);
+    will-change: transform;
+ }
+
+ @media (max-width:1000px){
+  h1{
+    text-align:center;
+    font-size: 2rem;
+  }
+  h2{
+    font-size: 1.5rem;
+  }
+  .tooltip .icon{
+    font-size: 1.5rem;
+  }
+  .tooltips{
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .tooltip{
+    width: 85%;
+  }
+  .tooltip:nth-child(2){
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .tooltip .divider{
+    width: 70%;
+  }
+  .tooltip:nth-child(2) .divider{
+    transform-origin: right center;
+  }
+  .tooltip:nth-child(2) .icon,
+  .tooltip:nth-child(2) .title{
+    width: 100%;
+  }
+ }
+
+ /* we will give the product a 10 vw as we stick it but 
+ header1= 200vw
+ header2= 150
+ mask= 100% i.e 100vw  
+ 
+
+ THE BELOW IS INCORRECT I JUST WORTE IT AWS I THOUGHT I AM BIG BRAIN BUT NOW  
+ the tool tip is said to take 75% width probally of the porduct so it should be about 75vp 
+ total that is around 525 so now on doing a stickey height 10- 1000vw will be divided to 
+ 
+ you need calculation 
+ if in 525 took 200 then in 1000 
+ so (525/200)*1000 that is 
+ 325 that why he too 0.35 for the end of the first section of header 1
+ 
+ he just rounded it off to that 
+ the next will take
+ (525)*/
